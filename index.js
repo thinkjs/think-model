@@ -1,7 +1,7 @@
 const helper = require('think-helper');
 const path = require('path');
 const {COMPARISON_LIST} = require('think-model-abstract');
-const Model = require('./lib/model.js');
+const Model = require('./src/model.js');
 
 module.exports = app => {
   app.on('filterParam', data => {
