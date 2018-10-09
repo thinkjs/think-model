@@ -1,6 +1,6 @@
 
 declare namespace ThinkModel {
-  
+
   interface Model {
     new(modelName?: string, config?: object): Model;
     /**
@@ -242,13 +242,19 @@ declare namespace ThinkModel {
     model(name: string, config?: any, module?: string): ThinkModel.Model;
   }
 
+  enum Relation {
+    HAS_MANY,
+    HAS_ONE,
+    BELONG_TO,
+    MANY_TO_MANY
+  }
 }
 
 declare module 'thinkjs' {
-  interface Think extends ThinkModel.ModelExtend, ThinkModel.ModelThinkExtend {}
-  interface Controller extends ThinkModel.ModelExtend {}
-  interface Context extends ThinkModel.ModelExtend {}
-  interface Service extends ThinkModel.ModelExtend {}
+  interface Think extends ThinkModel.ModelExtend, ThinkModel.ModelThinkExtend { }
+  interface Controller extends ThinkModel.ModelExtend { }
+  interface Context extends ThinkModel.ModelExtend { }
+  interface Service extends ThinkModel.ModelExtend { }
 }
 
 export = ThinkModel;

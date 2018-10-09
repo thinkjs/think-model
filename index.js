@@ -72,3 +72,10 @@ module.exports = app => {
     }
   };
 };
+
+module.exports.Relation = {
+  HAS_ONE: Model.HAS_ONE,
+  HAS_MANY: Model.HAS_MANY,
+  BELONG_TO: Model.BELONG_TO,
+  MANY_TO_MANY: Model.MANY_TO_MANY
+}
