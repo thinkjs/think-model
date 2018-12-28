@@ -3,6 +3,10 @@ declare namespace ThinkModel {
 
   interface Model {
     new(modelName?: string, config?: object): Model;
+    readonly HAS_MANY: number;
+    readonly HAS_ONE: number;
+    readonly BELONG_TO: number;
+    readonly MANY_TO_MANY: number;
     /**
      * get or set db
      */
@@ -240,13 +244,6 @@ declare namespace ThinkModel {
 
   interface ModelExtend {
     model(name: string, config?: any, module?: string): ThinkModel.Model;
-  }
-
-  enum Relation {
-    HAS_MANY,
-    HAS_ONE,
-    BELONG_TO,
-    MANY_TO_MANY
   }
 }
 
