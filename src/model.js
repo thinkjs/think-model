@@ -387,7 +387,15 @@ module.exports = class Model {
    * after find
    * @return {} []
    */
-  afterFind(data) {
+  async afterFind(data) {
+    if (this.config.jsonFormat) {
+      const schema = await this.db().getSchema();
+      Object.keys(schema)
+        .filter(key => data[key] !== undefined && schema[key].tinyType === 'json')
+        .forEach(key => {
+          data[key] = JSON.parse(data[key]);
+        });
+    }
     return this[RELATION].afterFind(data);
   }
   /**
@@ -401,7 +409,17 @@ module.exports = class Model {
    * @param  {Mixed} result []
    * @return {}        []
    */
-  afterSelect(data) {
+  async afterSelect(data) {
+    if (this.config.jsonFormat) {
+      const schema = await this.db().getSchema();
+      const keys = Object.keys(schema).filter(key => schema[key].tinyType === 'json');
+      data.forEach(row => {
+        keys.filter(key => row[key] !== undefined).forEach(key => {
+          row[key] = JSON.parse(row[key]);
+        });
+      });
+    }
+
     return this[RELATION].afterSelect(data);
   }
   /**
