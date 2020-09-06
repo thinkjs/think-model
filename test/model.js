@@ -516,6 +516,39 @@ test('model find data', async t => {
   t.deepEqual(result, data);
 });
 
+test('model afterFind parse json data', async t => {
+  const data = {title: 'hello', content: 'world', json: JSON.stringify([1,2,3,4])};
+  class PostModel extends Model {
+    async afterFind(findData) {
+      findData = await Model.prototype.afterFind.call(this, findData);
+      t.deepEqual(findData, {title: 'hello', content: 'world', json: [1,2,3,4]});
+    }
+  }
+
+  const model = new PostModel('post', {
+    handle: class {
+      getSchema() {
+        return {
+          title: {
+            tinyType: 'varchar'
+          },
+          content: {
+            tinyType: 'varchar'
+          },
+          json: {
+            tinyType: 'json'
+          }
+        }
+      }
+      select() {
+        return [data];
+      }
+    },
+    jsonFormat: true
+  });
+  await model.where({id: 3}).limit([0, 10]).find();
+});
+
 test('model select data', async t => {
   t.plan(5);
 
@@ -545,6 +578,39 @@ test('model select data', async t => {
   };
   const result = await model.where({id: ['>', 10]}).select();
   t.deepEqual(result, data);
+});
+
+test('model afterSelect parse json data', async t => {
+  const data = [{title: 'hello', content: 'world', json: JSON.stringify([1,2,3,4])}];
+  class PostModel extends Model {
+    async afterSelect(selectData) {
+      selectData = await Model.prototype.afterSelect.call(this, selectData);
+      t.deepEqual(selectData, [{title: 'hello', content: 'world', json: [1,2,3,4]}]);
+    }
+  }
+
+  const model = new PostModel('post', {
+    handle: class {
+      getSchema() {
+        return {
+          title: {
+            tinyType: 'varchar'
+          },
+          content: {
+            tinyType: 'varchar'
+          },
+          json: {
+            tinyType: 'json'
+          }
+        }
+      }
+      select() {
+        return data;
+      }
+    },
+    jsonFormat: true
+  });
+  await model.where('1=1').select();
 });
 
 test.todo('selectAdd');
