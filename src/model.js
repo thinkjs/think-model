@@ -184,7 +184,11 @@ module.exports = class Model {
   where(where) {
     if (!where) return this;
     if (helper.isString(where)) {
-      where = { _string: where };
+      if (this.options.where && this.options.where._string) {
+        where = { _string: this.options.where._string + ' and ' + where };
+      } else {
+        where = { _string: where };
+      }
     }
     const options = this.options;
     if (options.where && helper.isString(options.where)) {
