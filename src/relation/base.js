@@ -18,7 +18,7 @@ module.exports = class BaseRelation {
    * parse where in relation model
    * @param {String} prefix prefix for table alia name
    */
-  parseRelationWhere(prefix) {
+  parseRelationWhere(prefix = '') {
     const {key, fKey} = this.options;
     if (helper.isArray(this.data)) {
       const keys = [];
